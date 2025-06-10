@@ -10,9 +10,9 @@ export type Match = {
 
 const matches: Match[] = [
   {
-    cards: 9,
+    cards: 4,
     name: "Very Easy Match",
-    description: "A simple match game with 8 cards.",
+    description: "A simple match game with 4 cards.",
   },
   {
     cards: 16,
@@ -34,6 +34,11 @@ const matches: Match[] = [
     name: "Very Hard Match",
     description: "A hard match game with 100 cards.",
   },
+  {
+    cards: 144,
+    name: "Insane Match",
+    description: "A hard match game with 144 cards.",
+  }
 ];
 
 const selectedMatch = ref<Match | null>(null);
