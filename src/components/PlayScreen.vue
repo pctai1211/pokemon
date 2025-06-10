@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps, computed, ref } from 'vue';
 import type { Match } from './MainScreen.vue';
+import type { Card as ICard } from './Card.vue';
 import Card from './Card.vue';
 const { matchType, nextMatch } = defineProps<{ matchType: Match, nextMatch: () => void; }>();
 function shuffleArray<T>(array: T[]): T[] {
@@ -11,12 +12,10 @@ function shuffleArray<T>(array: T[]): T[] {
     }
     return newArray;
 }
-const selectedCards = ref<number[]>([]);
-const cardRefs = ref<InstanceType<typeof Card>[]>([]);
+const selectedCards = ref<ICard[]>([]);
+const cardRefs = ref<Array<InstanceType<typeof Card> | null>>([]);
 
-
-
-const cards = ref<{ id: number; disabled: boolean }[]>([]);
+const cards = ref<ICard[]>([]);
 
 function generateCards() {
     const pokemons = Array.from({ length: matchType.cards / 2 }, (_, i) => i + 1);
@@ -28,7 +27,7 @@ function generateCards() {
     }));
 }
 generateCards();
-const onClickedCard = (card: { id: number; disabled: boolean; index: number }) => {
+const onClickedCard = (card: ICard) => {
     if (selectedCards.value.length < 2) {
         selectedCards.value.push(card);
     }
@@ -48,7 +47,7 @@ const onClickedCard = (card: { id: number; disabled: boolean; index: number }) =
                     nextMatch()
                     alert('Congratulations! You have completed the game!');
                     selectedCards.value = [];
-                    cardRefs.value.forEach(cardRef => cardRef.onFlipBackCard());
+                    cardRefs.value.forEach(cardRef => cardRef?.onFlipBackCard());
                 }, 500);
             }
         } else {
@@ -71,7 +70,8 @@ const onClickedCard = (card: { id: number; disabled: boolean; index: number }) =
             <div v-for="(card) in cards" :key="card.id + '-' + card.index"
                 class="flex items-center justify-center w-full h-[160px]"
                 :class="{ '!h-[90px]': matchType.cards === 64 }">
-                <Card :card="card" :onClickCard="onClickedCard" :ref="el => cardRefs[card.index] = el" />
+                <Card :card="card" :onClickCard="onClickedCard"
+                    :ref="(el) => cardRefs[card.index] = el as InstanceType<typeof Card> | null" />
             </div>
         </div>
     </div>
