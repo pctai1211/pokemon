@@ -10,7 +10,7 @@ export type Match = {
 
 const matches: Match[] = [
   {
-    cards: 8,
+    cards: 9,
     name: "Very Easy Match",
     description: "A simple match game with 8 cards.",
   },
@@ -20,14 +20,19 @@ const matches: Match[] = [
     description: "A simple match game with 16 cards.",
   },
   {
-    cards: 32,
+    cards: 36,
     name: "Medium Match",
-    description: "A medium match game with 32 cards.",
+    description: "A medium match game with 36 cards.",
   },
   {
     cards: 64,
     name: "Hard Match",
     description: "A hard match game with 64 cards.",
+  },
+  {
+    cards: 100,
+    name: "Very Hard Match",
+    description: "A hard match game with 100 cards.",
   },
 ];
 

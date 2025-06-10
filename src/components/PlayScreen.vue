@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed, ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import type { Match } from './MainScreen.vue';
 import type { Card as ICard } from './Card.vue';
 import Card from './Card.vue';
@@ -26,7 +26,7 @@ function generateCards() {
         index,
     }));
 }
-generateCards();
+onMounted(generateCards)
 const onClickedCard = (card: ICard) => {
     if (selectedCards.value.length < 2) {
         selectedCards.value.push(card);
@@ -64,12 +64,11 @@ const onClickedCard = (card: ICard) => {
 
 </script>
 <template>
-    <div>
-        <div class="grid grid-cols-8 gap-4"
-            :class="{ 'grid-cols-8': matchType.cards === 64, '!grid-cols-4': matchType.cards === 8 || matchType.cards === 16 }">
+    <div class="flex justify-center items-center">
+        <div class="grid gap-1"
+            :style="{ gridTemplateColumns: `repeat(${Math.sqrt(matchType.cards)}, minmax(0, 56px))` }">
             <div v-for="(card) in cards" :key="card.id + '-' + card.index"
-                class="flex items-center justify-center w-full h-[160px]"
-                :class="{ '!h-[90px]': matchType.cards === 64 }">
+                class="flex items-center justify-center w-14 h-14">
                 <Card :card="card" :onClickCard="onClickedCard"
                     :ref="(el) => cardRefs[card.index] = el as InstanceType<typeof Card> | null" />
             </div>
